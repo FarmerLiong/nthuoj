@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "stdio.h": "c"
+    },
+    "editor.tokenColorCustomizations": {
+        "functions": {
+            "fontStyle": "italic"
+        }
+        // "variables": "#e6e5e5",
+        // "textMateRules": [
+        //     {
+        //         "scope": "keyword.operator",
+        //         "settings": {
+        //             "foreground": "#a1a1a1"
+        //         }
+        //     }
+        // ]
+    }
+}
