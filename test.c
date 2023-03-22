@@ -1,7 +1,11 @@
 #include <stdio.h>
 
 int main(){
-    int a;
-    scanf("%d", &a);
-    printf("%d", a);
+    char c;
+    int numVar = 0b0000;
+    scanf("%c", &c);
+    numVar = numVar | (1 << (c - 'A'));
+    printf("%d", numVar);
+    return 0;
 }
+
