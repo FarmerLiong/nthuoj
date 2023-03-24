@@ -5,7 +5,7 @@ int main(){
     int numVar = 0b0000;
     scanf("%c", &c);
     numVar = numVar | (1 << (c - 'A'));
-    printf("%d", numVar);
+    printf("%c", '1' & '0');
     return 0;
 }
 

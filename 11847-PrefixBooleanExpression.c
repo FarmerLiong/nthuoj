@@ -1,68 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h> 
 
 typedef struct _node{
     char data;
     struct _node *left, *right;
 } BTnode;
 
-int numVar = 0b0000;
-int isRightOp = 0, prths = 0;
+char table[5][20] = {{"0000000011111111"}, {"0000111100001111"}, {"0011001100110011"}, {"0101010101010101"}};
+char input[32];
+int pos = 0;
 
-void printBT(BTnode* root){
-    if(root != NULL){
-        int havP = 0;
-        if(root->left != NULL){
-            if(isRightOp && isRightOp != prths){
-                havP = 1; prths++;
-                putchar('(');
-            }
-            printBT(root->left);
-        }
-        putchar(root->data);
-        if(root->right != NULL){
-            if(root->right->data == '&' || root->right->data == '|'){
-                isRightOp += 1;
-            }
-            printBT(root->right);
-            if(havP && prths > 0){
-                havP = 0; prths--; isRightOp--;
-                putchar(')');
-            }
-        }
-
+int calcBT(int ans, int idth){
+    char c = input[pos++];
+    if(c == '&' || c == '|'){
+        if(c == '&')  ans = calcBT(ans, idth) & calcBT(ans,idth);
+        else if(c == '|')  ans = calcBT(ans, idth) | calcBT(ans,idth);
     }
-}
-
-void calcBT(BTnode* root){
-    
-}
-
-BTnode* makeBT(){
-    char c; 
-    BTnode* root = (BTnode*)malloc(sizeof(BTnode));
-    
-    c = getchar();
-    root->data = c;
-    root->left = root->right = NULL;
-
-    if(c >= 'A' && c <= 'D'){
-        numVar = numVar | (1 << (c - 'A'));
-    }
-    else if(c == '&' || c == '|'){
-        root->left = makeBT();
-        root->right = makeBT();
-    }
-    else{
-        assert(!"undefined c");
-    }
-    return root;
+    else if(c >= 'A' && c <= 'D')
+        return (table[c - 'A'][idth] - '0');
+    return ans;
 }
 
 int main(){
-    BTnode* root = makeBT();
-    printBT(root);
-    printf("\n%d", numVar);
+    scanf("%s", input);
+    for(int i = 0; i < 16; i++){
+        pos = 0;
+        for(int j = 0; j < 4; j++) printf("%d ", table[j][i] - '0');
+        printf("%d\n", calcBT(0, i));
+    }
     return 0;
 }
