@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-/* あ～死ぬ　/v\ */
-
+/* あ～死ぬ　/v\
+*/
 // for lex
 #define MAXLEN 256
 
@@ -603,14 +603,27 @@ int codeGen(BTNode *root, int dir) {
                 printf("MOV [%d] r%d\n", 4 * getaddr(root->left->lexeme), idx);
                 break;
             case ADDSUB_ASSIGN:
-                idx = codeGen(root->left, -1);               // only var on left
+                idx = codeGen(root->left, -1);               
                 rx = codeGen(root->right, 1);
+
+                if (idx == -1) {
+                    if(queue == 0) error(RUNOUT);
+                    --queue;
+                    for (regidx = 0; reg[regidx]; regidx++);
+                    idx = regidx;
+                    reg[idx] = 1;
+                    if (isdigit(stack[queue][0]))
+                        printf("MOV r%d %d\n", idx, atoi(stack[queue]));
+                    else
+                        printf("MOV r%d [%d]\n", idx, 4 * getaddr(stack[queue]));
+                }
                 if (strcmp(root->lexeme, "+=") == 0) {
                     printf("ADD r%d r%d\n", idx, rx);
                 } else if (strcmp(root->lexeme, "-=") == 0) {
                     printf("SUB r%d r%d\n", idx, rx);
                 }
                 printf("MOV [%d] r%d\n", 4 * getaddr(root->left->lexeme), idx);
+                reg[rx] = 0;
                 break;
             case INCDEC:
                 idx = codeGen(root->right, 1);
