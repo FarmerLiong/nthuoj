@@ -12,9 +12,7 @@ typedef enum {
     UNKNOWN, END, ENDFILE,
     INT, ID,
     ADDSUB, MULDIV,
-    ASSIGN, ADDSUB_ASSIGN,
-    AND, XOR, OR,
-    INCDEC,
+    ASSIGN,
     LPAREN, RPAREN
 } TokenSet;
 
@@ -78,22 +76,10 @@ BTNode *makeNode(TokenSet tok, const char *lexe);
 // Free the syntax tree
 void freeTree(BTNode *root);
 BTNode *factor(void);
-BTNode *unary_expr(void);
-BTNode *muldiv_expr(void);
-BTNode *muldiv_expr_tail(BTNode *left);
-BTNode *addsub_expr(void);
-BTNode *addsub_expr_tail(BTNode *left);
-BTNode *and_expr(void);
-BTNode *and_expr_tail(BTNode *left);
-BTNode *xor_expr(void);
-BTNode *xor_expr_tail(BTNode *left);
-BTNode *or_expr(void);
-BTNode *or_expr_tail(BTNode *left);
-BTNode *assign_expr(void);
-// BTNode *term(void);
-// BTNode *term_tail(BTNode *left);
-// BTNode *expr(void);
-// BTNode *expr_tail(BTNode *left);
+BTNode *term(void);
+BTNode *term_tail(BTNode *left);
+BTNode *expr(void);
+BTNode *expr_tail(BTNode *left);
 void statement(void);
 // Print error message and exit the program
 void err(ErrorType errorNum);
