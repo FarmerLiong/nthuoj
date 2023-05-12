@@ -1,52 +1,80 @@
-#include <stdio.h>
+#include<stdio.h>
+#if !defined(N)
 #define N 3
+#endif
 
-int main (void){
-    int A[N], D[N];
-    int max = 0, maxidx = 0, flag = 1;
-    
-    for(int i = 0; i < N; i++){
-        A[i] = i + 1;
-        D[i] = -1;
+int main(void)
+{
+    int mat[N][N];
+    int sgn, det, i, j, k=0, l;
+    int A[N], D[N], flag=1;
+    int max, maxidx;
+    int tmp, tmpidx;
+
+    for(i=0; i<N; i++){
+        for(j=0; j<N; j++){
+            scanf("%d",  &mat[i][j]);
+        }
     }
-    
+
+    printf("Input matrix is\n");
+    for(i=0; i<N; i++){
+        printf("  ");
+        for(j=0; j<N; j++){
+            printf("%d ", mat[i][j]);
+        }
+        printf("\n");
+    }
+
+    for(j=0; j<N; j++){
+        A[j] = j;
+        D[j] = -1;
+    }
+
+    sgn = 1;
     while(flag){
-        flag = 0, max = 0;
-        for(int i = 0; i < N; i++){         //1: largest mobile num, max
-            int tmp = 0, tmpidx = 0;
-            if(i > 0 && D[A[i] - 1] < 0 && A[i] > A[i-1]){
-                tmp = A[i];
-                tmpidx = i;
+        max = 0; flag = 0;
+        det = 1;
+        for(j=0; j<N; j++){
+            tmp = 0;
+            tmpidx = 0;
+            if(j>0 && D[A[j]-1]<0 && A[j]>A[j-1]){
+                tmp = A[j];
+                tmpidx = j;
                 flag = 1;
             }
-            else if(i < N-1 && D[A[i] - 1] > 0 && A[i] > A[i+1]){
-                tmp = A[i];
-                tmpidx = i;
+            else if(j<N-1 && D[A[j]-1]>0 && A[j]>A[j+1]){
+                tmp = A[j];
+                tmpidx = j;
                 flag = 1;
             }
             if(tmp > max){
                 max = tmp;
                 maxidx = tmpidx;
-            } 
-            printf(" %d", A[i]);
-        }
+            }
 
-        // swapping
+            det *= mat[j][A[j]];
+            det = det*sgn;
+        }
+        sgn = sgn*-1;
+
         if(D[max - 1] < 0){
-            A[maxidx] = A[maxidx - 1];
-            A[maxidx - 1] = max;
+            A[maxidx] = A[maxidx-1];
+            A[maxidx-1] = max;
         }
         else if(D[max - 1] > 0){
-            A[maxidx] = A[maxidx + 1];
-            A[maxidx + 1] = max;
+            A[maxidx] = A[maxidx+1];
+            A[maxidx+1] = max;
         }
-        
-        for(int i = 0; i < N; i++){
-            if(A[i] > max){
-                D[A[i] - 1] *= -1;
+
+        for(j=0; j<N; j++){
+            if(A[j] > max){
+                D[A[j]-1] *= -1;
             }
         }
-        printf("\n");
+        k += det;
     }
+    printf("Det = %d\n", k);
+
     return 0;
 }
